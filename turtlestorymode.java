@@ -27,20 +27,19 @@ public class turtlestorymode{
       amountToMove.put("L",-1);
       String[][] boardmatrix = new String[6][6];
       ArrayList<String> levels = generateLevels();
-//       for(int x = 0; x < levels.size(); x++){ //solves each level
-//          board = "";
-//          String curlevel = levels.get(x);
-//          boardmatrix = convertString(curlevel);
-//          readBoard(boardmatrix);
-//       //          printBoard(board);
-//          // Board solution = solve(board);
-//       //          System.out.println(suggestNextMove(board));
-//          ArrayList<String> suggestedmoves = suggestNextMoves(board,0);
-//          for(String s: suggestedmoves)
-//             System.out.println(s);
-//          System.out.println();
-//          
-//       }
+      for(int x = 0; x < levels.size(); x++){ //solves each level
+         board = "";
+         String curlevel = levels.get(x);
+         boardmatrix = convertString(curlevel);
+         readBoard(boardmatrix);
+      //          printBoard(board);
+         // Board solution = solve(board);
+      //          System.out.println(suggestNextMove(board));
+         StringBuilder suggestedmoves = suggestNextMoves(board,3);
+         System.out.print(suggestedmoves);
+         System.out.println();
+         
+      }
    }
    public static void printPath(Board b){ //prints the path
       for(int x = 0; x < b.path.length(); x+=64){
@@ -213,10 +212,10 @@ public class turtlestorymode{
       String[][] suggestboard = convertString(suggest);
       return findDifference(startboard,suggestboard);
    }
-   public static ArrayList<String> suggestNextMoves(String state, int n){
-      ArrayList<String> out = new ArrayList<>();
+   public static StringBuilder suggestNextMoves(String state, int n){
+      StringBuilder out = new StringBuilder();
       if(n<=0){
-         out.add("Please add a positive integer greater than 0");
+         out.append("Please add a positive integer greater than 0");
          return out;
       }
       Board solution = solve(state);
@@ -230,7 +229,7 @@ public class turtlestorymode{
       //        printBoard(suggest);
          String[][] startboard = convertString(start);
          String[][] suggestboard = convertString(suggest);
-         out.add(findDifference(startboard,suggestboard));
+         out.append(findDifference(startboard,suggestboard)).append("\n");
       }
       return out;
    }
