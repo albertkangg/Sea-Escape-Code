@@ -32,8 +32,14 @@ public class turtlestorymode{
 //          String curlevel = levels.get(x);
 //          boardmatrix = convertString(curlevel);
 //          readBoard(boardmatrix);
-//          printBoard(board);
-//          Board solution = solve(board);
+//       //          printBoard(board);
+//          // Board solution = solve(board);
+//       //          System.out.println(suggestNextMove(board));
+//          ArrayList<String> suggestedmoves = suggestNextMoves(board,0);
+//          for(String s: suggestedmoves)
+//             System.out.println(s);
+//          System.out.println();
+//          
 //       }
    }
    public static void printPath(Board b){ //prints the path
@@ -207,6 +213,28 @@ public class turtlestorymode{
       String[][] suggestboard = convertString(suggest);
       return findDifference(startboard,suggestboard);
    }
+   public static ArrayList<String> suggestNextMoves(String state, int n){
+      ArrayList<String> out = new ArrayList<>();
+      if(n<=0){
+         out.add("Please add a positive integer greater than 0");
+         return out;
+      }
+      Board solution = solve(state);
+      int boundcheck = solution.path.length()/64-1;
+      for(int x = 0; x < n; x++){
+         if(x==boundcheck)
+            break;
+         String start = solution.path.substring(x*64,(x+1)*64);
+      //          printBoard(start);
+         String suggest = solution.path.substring((x+1)*64,(x+2)*64);
+      //        printBoard(suggest);
+         String[][] startboard = convertString(start);
+         String[][] suggestboard = convertString(suggest);
+         out.add(findDifference(startboard,suggestboard));
+      }
+      return out;
+   }
+   
    public static String findDifference(String[][] startboard, String[][] suggestboard){//suggests next move based on how many spaces to move
       for(int x = 0; x < startboard.length; x++){
          for(int y = 0; y < startboard[0].length; y++){
@@ -221,12 +249,18 @@ public class turtlestorymode{
                   direction = -1;
                }
                if(odds.contains(piece)){//up-down
-                  int xindex1 = x+(-1*direction);
+               //                   direction*=-1;
+               //                   if(direction==1){
+               //                      String[][] temp = startboard;
+               //                      startboard = suggestboard;
+               //                      suggestboard = temp;
+               //                   }
+                  int xindex1 = 0;
                   while(!startboard[xindex1][y].equals(piece))
-                     xindex1+=(-1*direction);
-                  int xindex2 = xindex1+(1*direction);
+                     xindex1+=1;
+                  int xindex2 = 0;
                   while(!suggestboard[xindex2][y].equals(piece))
-                     xindex2 += (1*direction);
+                     xindex2 += 1;
                   if(direction == -1){
                      return "Try moving the piece " + x + " space(s) away from the top and " + y + " space(s) from the left " + Math.abs(xindex2-xindex1) + " space(s) up.";
                   }
@@ -235,12 +269,17 @@ public class turtlestorymode{
                   }
                }
                else{//left-right
-                  int yindex1 = y+(-1*direction);
+               //                   if(direction==1){
+               //                      String[][] temp = startboard;
+               //                      startboard = suggestboard;
+               //                      suggestboard = temp;
+               //                   }
+                  int yindex1 = 0;
                   while(!startboard[x][yindex1].equals(piece))
-                     yindex1+=(-1*direction);
-                  int yindex2 = yindex1+(1*direction);
+                     yindex1+=1;
+                  int yindex2 = 0;
                   while(!suggestboard[x][yindex2].equals(piece))
-                     yindex2 += (1*direction);
+                     yindex2 += 1;
                   if(direction == -1){
                      return "Try moving the piece " + x + " space(s) away from the top and " + y + " space(s) from the left " + Math.abs(yindex2-yindex1) + " space(s) left.";
                   }
